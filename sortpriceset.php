@@ -72,7 +72,7 @@ function sortpriceset_civicrm_buildForm($formName, &$form) {
         unset($price[$id]);
       }
     }
-    $newprice = $newprice + $priceSets;
+    $newprice = $newprice + $price;
     $form->add('select', 'price_set_id', ts('Price Set'),
       [
         '' => ts('- none -'),
