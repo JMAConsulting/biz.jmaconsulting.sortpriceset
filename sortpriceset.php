@@ -66,18 +66,19 @@ function sortpriceset_civicrm_buildForm($formName, &$form) {
     $price = CRM_Price_BAO_PriceSet::getAssoc(FALSE, 'CiviEvent');
     $priceSets = getpricesetbyweight(TRUE);
     $newprice = [];
-    foreach ($priceSets as $id =>  $weight) {
+    foreach ($priceSets as $id => $weight) {
       if (array_key_exists($id, $price)) {
         $newprice[$id] = $price[$id];
         unset($price[$id]);
       }
     }
     $newprice = $newprice + $priceSets;
-    $form->addField('price_set_id', [
-      'entity' => 'PriceSet',
-      'options' => $newprice,
-      'onchange' => "return showHideByValue('price_set_id', '', 'map-field', 'block', 'select', false);",
-    ]);
+    $form->add('select', 'price_set_id', ts('Price Set'),
+      [
+        '' => ts('- none -'),
+      ] + $newprice,
+      NULL, ['onchange' => "return showHideByValue('price_set_id', '', 'map-field', 'block', 'select', false);"]
+    );
   }
 }
 
@@ -93,7 +94,7 @@ function sortpriceset_civicrm_postProcess($formName, &$form) {
 }
 
 function getpricesetbyweight($sort = FALSE) {
-  $clause = $sort  ? 'ORDER BY weight ASC' : '';
+  $clause = $sort ? 'ORDER BY weight ASC' : '';
   $v = CRM_Core_DAO::executeQuery("SELECT price_set_id, weight FROM civicrm_price_set_weight $clause ")->fetchAll();
   $priceSet = [];
   foreach($v as $value) {
