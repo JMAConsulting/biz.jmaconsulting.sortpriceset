@@ -1,16 +1,19 @@
-<div id="crm-price-set-form-block-weight">
-    <span class="label">
+<table>
+  <tr id="weight-block">
+    <td class="label">
       {$form.weight.label}
-    </span>
-    <span>
+    </td>
+    <td>
       {$form.weight.html}
-    </span>
-  </div>
+    </td>
+  </tr>
+</table>
 
 {literal}
 <script type="text/javascript">
  CRM.$(function($) {
-   $('#crm-price-set-form-block-weight').insertAfter('#min_amount');
+   console.log($('#weight-block'));
+   $('#weight-block').insertAfter('#min_amount');
  });
 </script>
 {/literal}

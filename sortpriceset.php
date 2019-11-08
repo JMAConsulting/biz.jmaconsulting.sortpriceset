@@ -38,7 +38,7 @@ function sortpriceset_civicrm_pageRun(&$page) {
       $weights = [];
       $count = 1;
       foreach ($rows as $id => $row) {
-        $weights[$count] = CRM_Utils_Array::value($id, $priceSetWeights, $count);
+        $weights[$row['title']] = CRM_Utils_Array::value($id, $priceSetWeights, $count);
         $count++;
       }
       $page->assign('weights', json_encode($weights));
@@ -53,7 +53,7 @@ function sortpriceset_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Price_Form_Set') {
     $form->add('text', 'weight', ts('Weight'));
     CRM_Core_Region::instance('page-body')->add(array(
-      'template' => "CRM/Chfunds/AddCHFund.tpl",
+      'template' => "addweight.tpl",
     ));
     if ($id = $form->getVar('_sid')) {
       $defaults = [
@@ -92,7 +92,7 @@ function sortpriceset_civicrm_postProcess($formName, &$form) {
 
 function getpricesetbyweight($sort = FALSE) {
   $clause = $sort  ? 'ORDER BY weight ASC' : '';
-  $v = CRM_Core_DAO::executeQuery("SELECT price_set_id, weight FROM civicrm_price_set_weight $sort ")->fetchAll();
+  $v = CRM_Core_DAO::executeQuery("SELECT price_set_id, weight FROM civicrm_price_set_weight $clause ")->fetchAll();
   $priceSet = [];
   foreach($v as $value) {
     $priceSet[$value['price_set_id']] = $value['weight'];
