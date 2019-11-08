@@ -69,8 +69,10 @@ function sortpriceset_civicrm_buildForm($formName, &$form) {
     foreach ($priceSets as $id =>  $weight) {
       if (array_key_exists($id, $price)) {
         $newprice[$id] = $price[$id];
+        unset($price[$id]);
       }
     }
+    $newprice = $newprice + $priceSets;
     $form->addField('price_set_id', [
       'entity' => 'PriceSet',
       'options' => $newprice,
